@@ -129,7 +129,7 @@ public class PerTypeCyclicUpdateBag
     private float _timeBetweenUpdates;
     private SortedList<UpdateOffsetWithAction, UpdateeWithMethod> _updatees;
     private Dictionary<Action, UpdateOffsetWithAction> _actionToKey;
-    private int? _currentIndex;
+    private int _currentIndex;
 
     public PerTypeCyclicUpdateBag(Random random, float timeBetweenUpdates)
     {
@@ -162,14 +162,12 @@ public class PerTypeCyclicUpdateBag
 
         if (_updatees.Count == 1)
         {
-            Assert.IsFalse(_currentIndex.HasValue);
             _currentIndex = 0;
         }
         else
         {
-            Assert.IsTrue(_currentIndex.HasValue);
             var indexOfNewUpdatee = _updatees.IndexOfKey(key);
-            if (indexOfNewUpdatee <= _currentIndex.Value)
+            if (indexOfNewUpdatee <= _currentIndex)
             {
                 _currentIndex++;
             }
@@ -185,11 +183,11 @@ public class PerTypeCyclicUpdateBag
         _updatees.RemoveAt(updateeIndex);
         if (_updatees.Count == 0)
         {
-            _currentIndex = null;
+            _currentIndex =0;
         }
         else
         {
-            if (_currentIndex.Value > updateeIndex)
+            if (_currentIndex > updateeIndex)
             {
                 _currentIndex--;
             }
@@ -238,12 +236,13 @@ public class PerTypeCyclicUpdateBag
         }
 
         var timesUpdateWasCalled = 0;
-        var currentElementOffset = _updatees.Values[_currentIndex.Value].UpdateOffset;
+        var currentElementOffset = _updatees.Values[_currentIndex].UpdateOffset;
         bool weExpectOverflow = isPositioningPass && currentElementOffset < currentCycleOffset;
 
-        for (int i = 0; i < _updatees.Count; i++)
+        var updateesCount = _updatees.Count;
+        for (int i = 0; i < updateesCount; i++)
         {
-            var idx = (i + _currentIndex.Value) % _updatees.Count;
+            var idx = (i + _currentIndex) % updateesCount;
             if (idx == 0 && i > 0)
             {
                 weExpectOverflow = false;

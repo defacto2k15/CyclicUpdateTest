@@ -621,9 +621,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f43770f429a6c74a82e88513cf721ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsToGenerateCount: 2000
+  ObjectsToGenerateCount: 1000
   TimeBetweenUpdates: 0.2
-  TimeBetweenLateUpdates: 0.5
+  TimeBetweenLateUpdates: -2
   Prefab: {fileID: 9097263931631586946, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
 --- !u!4 &2067441491
 Transform:
