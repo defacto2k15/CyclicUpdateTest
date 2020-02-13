@@ -166,9 +166,10 @@ public class PerTypeCyclicUpdateBag
             Component = component,
             UpdateOffset = updateOffset,
             UpdateAction = updateAction,
-            NextUpdateTime = CalculateNextUpdateTime(updateOffset)
+            NextUpdateTime = CalculateNextUpdateTime(updateOffset,1)
         };
         _updatees.Add(key, updatee);
+
         if (_updatees.Count == 1)
         {
             Assert.IsFalse(_currentIndex.HasValue);
@@ -181,7 +182,12 @@ public class PerTypeCyclicUpdateBag
             if (indexOfNewUpdatee <= _currentIndex.Value)
             {
                 _currentIndex++;
-            };
+                updatee.NextUpdateTime = CalculateNextUpdateTime(updateOffset, 2);
+            }
+            else
+            {
+                //updatee.NextUpdateTime = CalculateNextUpdateTime(updateOffset, 0);
+            }
         }
     }
 
@@ -219,12 +225,13 @@ public class PerTypeCyclicUpdateBag
         for (int i = 0; i < _updatees.Count; i++)
         {
             var idx = (i + _currentIndex.Value) % _updatees.Count;
+                        newCurrentIndex = idx;
             var element = _updatees.ElementAt(idx).Value;
+            _currentIndex = idx;
 
                     if (smallestNewNextTime > element.NextUpdateTime)
                     {
                         smallestNewNextTime = element.NextUpdateTime;
-                        newCurrentIndex = idx;
                     }
 
             if (element.Component == null)
@@ -240,11 +247,10 @@ public class PerTypeCyclicUpdateBag
                 if (element.NextUpdateTime < Time.time)
                 {
                     element.UpdateAction();
-                    element.NextUpdateTime = CalculateNextUpdateTime(element.UpdateOffset);
+                    element.NextUpdateTime = CalculateNextUpdateTime(element.UpdateOffset,1);
                     if (smallestNewNextTime > element.NextUpdateTime)
                     {
                         smallestNewNextTime = element.NextUpdateTime;
-                        newCurrentIndex = idx;
                     }
                     idd++;
                 }
@@ -255,13 +261,20 @@ public class PerTypeCyclicUpdateBag
             }
         }
 
+        var idxTime = _updatees.ElementAt(_currentIndex.Value).Value.NextUpdateTime;
+        if (idxTime > _updatees.Select(c => c.Value.NextUpdateTime).Min())
+        {
+            var ii = 2;
+            UnityEngine.Debug.Log("STH IS BAD");
+        }
+
         if (idd > 0)
         {
             if (idd == 1)
             {
                 var tt = 2;
             }
-            UnityEngine.Debug.Log("Processed idd: " + idd);
+            //UnityEngine.Debug.Log("Processed idd: " + idd);
         }
 
         _currentIndex = newCurrentIndex;
@@ -269,9 +282,9 @@ public class PerTypeCyclicUpdateBag
         actionsToDelete?.ForEach(RemoveUpdatee);
     }
 
-    private float CalculateNextUpdateTime(float offset)
+    private float CalculateNextUpdateTime(float offset, int cycleOffset)
     {
-        var nextCycleStart = (1+Mathf.Floor(Time.time / _timeBetweenUpdates))*_timeBetweenUpdates;
+        var nextCycleStart = (cycleOffset+Mathf.Floor(Time.time / _timeBetweenUpdates))*_timeBetweenUpdates;
         var nextUpdateTime = nextCycleStart+ offset;
         return nextUpdateTime;
     }
