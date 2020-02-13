@@ -251,52 +251,42 @@ public class PerTypeCyclicUpdateBag
             newCurrentIndex = idx;
             var element = _updatees.Values[idx];
 
-            if (element.Component == null)
+            var elementUpdateOffset = element.UpdateOffset;
+            if (isPositioningPass)
             {
-                if (actionsToDelete == null)
+                if (elementUpdateOffset < currentCycleOffset || weExpectOverflow)
                 {
-                    actionsToDelete=new List<Action>();
+
                 }
-                actionsToDelete.Add(element.UpdateAction);
+                else
+                {
+                    break;
+                }
             }
             else
             {
-                var elementUpdateOffset = element.UpdateOffset;
-                if (isPositioningPass)
+                if (currentCycleOffset > previousCycleOffset)
                 {
-                    if (elementUpdateOffset < currentCycleOffset || weExpectOverflow)
+                    if (elementUpdateOffset >= previousCycleOffset && elementUpdateOffset < currentCycleOffset)
                     {
-
+                        timesUpdateWasCalled++;
+                        ExecuteLoop(element, ref actionsToDelete);
                     }
                     else
                     {
                         break;
                     }
-                }else 
+                }
+                else
                 {
-                    if (currentCycleOffset > previousCycleOffset)
+                    if (elementUpdateOffset > previousCycleOffset || elementUpdateOffset < currentCycleOffset)
                     {
-                        if (elementUpdateOffset >= previousCycleOffset && elementUpdateOffset < currentCycleOffset)
-                        {
-                            timesUpdateWasCalled++;
-                            element.UpdateAction();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        timesUpdateWasCalled++;
+                        ExecuteLoop(element, ref actionsToDelete);
                     }
                     else
                     {
-                        if (elementUpdateOffset > previousCycleOffset || elementUpdateOffset < currentCycleOffset)
-                        {
-                            timesUpdateWasCalled++;
-                            element.UpdateAction();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
@@ -320,6 +310,30 @@ public class PerTypeCyclicUpdateBag
         _currentIndex = newCurrentIndex;
 
         actionsToDelete?.ForEach(RemoveUpdatee);
+    }
+
+    private void ExecuteLoop(UpdateeWithMethod element, ref List<Action> actionsToDelete)
+    {
+        try
+        {
+            element.UpdateAction();
+        }
+        catch (Exception ex)
+        {
+            if (element.Component == null)
+            {
+                if (actionsToDelete == null)
+                {
+                    actionsToDelete = new List<Action>();
+                }
+
+                actionsToDelete.Add(element.UpdateAction);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(ex.ToString());
+            }
+        }
     }
 
     private int CalculateCycleIndex(float time)
