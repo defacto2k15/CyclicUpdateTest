@@ -4,6 +4,7 @@ using System;
 
 public class DebugUpdateRegisterObject : MonoBehaviour
 {
+    public bool UpdateName = true;
     public float TimeBetweenUpdates;
     private float LastUpdateTime;
 
@@ -53,12 +54,15 @@ public class DebugUpdateRegisterObject : MonoBehaviour
         var avgUpdate = _updateDeltaTimeSum / _updateCount;
         var avgLateUpdate = _lateUpdateDeltaTimeSum / _lateUpdateCount;
 
-        name = $"Update perc: {100*avgUpdate / TimeBetweenUpdates}% LatePerc {100*avgLateUpdate / TimeBetweenLateUpdates}%";
+        if (UpdateName)
+        {
+            name = $"Update perc: {100 * avgUpdate / TimeBetweenUpdates}% LatePerc {100 * avgLateUpdate / TimeBetweenLateUpdates}%";
+        }
     }
 
     void OnDestroy()
     {
         if(TimeBetweenUpdates > 0 ){CyclicUpdateRegistry.RemoveUpdateMethod(MyUpdate,this);}
-        if(TimeBetweenLateUpdates > 0 ){CyclicLateUpdateRegistry.RemoveUpdateMethod(MyUpdate,this);}
+        if(TimeBetweenLateUpdates > 0 ){CyclicLateUpdateRegistry.RemoveUpdateMethod(MyLateUpdate,this);}
     }
 }

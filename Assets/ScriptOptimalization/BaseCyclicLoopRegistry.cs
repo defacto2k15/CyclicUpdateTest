@@ -77,14 +77,6 @@ public class BaseCyclicLoopRegistry  : MonoBehaviour
     }
 }
 
-public class CyclicUpdateRegisterOrder
-{
-    public MonoBehaviour Component;
-    public Action UpdateAction;
-    public float TimeBetweenUpdates;
-    public bool OrderIsCancelled;
-}
-
 public class UpdateeWithMethod 
 {
     public MonoBehaviour Component;
@@ -181,10 +173,6 @@ public class PerTypeCyclicUpdateBag
             {
                 _currentIndex++;
             }
-            else
-            {
-                //updatee.NextUpdateTime = CalculateNextUpdateTime(updateOffset, 0);
-            }
         }
     }
 
@@ -208,7 +196,6 @@ public class PerTypeCyclicUpdateBag
         }
     }
 
-    private bool once = false;
     private float _previousUpdateTime;
     public void Loop()
     {
@@ -220,15 +207,15 @@ public class PerTypeCyclicUpdateBag
             return;
         }
 
-        if (!once)
-        {
-            foreach (var v in _updatees.Keys)
-            {
-                UnityEngine.Debug.Log(v.UpdateOffset);
-            }
+        //if (!once)
+        //{
+        //    foreach (var v in _updatees.Keys)
+        //    {
+        //        UnityEngine.Debug.Log(v.UpdateOffset);
+        //    }
 
-            once = true;
-        }
+        //    once = true;
+        //}
 
         List<Action> actionsToDelete=null;
         var newCurrentIndex = _currentIndex;
@@ -251,7 +238,7 @@ public class PerTypeCyclicUpdateBag
         }
 
         var timesUpdateWasCalled = 0;
-        var currentElementOffset = _updatees.ElementAt(_currentIndex.Value).Value.UpdateOffset;
+        var currentElementOffset = _updatees.Values[_currentIndex.Value].UpdateOffset;
         bool weExpectOverflow = isPositioningPass && currentElementOffset < currentCycleOffset;
 
         for (int i = 0; i < _updatees.Count; i++)
@@ -263,7 +250,7 @@ public class PerTypeCyclicUpdateBag
             }
 
             newCurrentIndex = idx;
-            var element = _updatees.ElementAt(idx).Value;
+            var element = _updatees.Values[idx];
 
             if (element.Component == null)
             {
@@ -328,8 +315,7 @@ public class PerTypeCyclicUpdateBag
         //UnityEngine.Debug.Log($"Cycle: {currentCycleIndex} CurOff:{currentCycleOffset} PrevCyc:{previousCycleIndex} PrefOffs:{previousCycleOffset} Index:{_currentIndex.Value} OldI:{oldIndex} TM:{times++} ");
         if (timesUpdateWasCalled > 0)
         {
-            UnityEngine.Debug.Log("TimesWeUpdated: " + timesUpdateWasCalled);
-
+            //UnityEngine.Debug.Log("TimesWeUpdated: " + timesUpdateWasCalled);
         }
 
         _currentIndex = newCurrentIndex;

@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2747055723415227915, guid: 3d5507655706d0643b99a2a6f285012e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
 --- !u!1 &558067975
@@ -432,6 +437,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2747055723415227915, guid: 3d5507655706d0643b99a2a6f285012e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
 --- !u!1001 &1316692134
@@ -500,6 +510,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Prefab (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747055723415227915, guid: 3d5507655706d0643b99a2a6f285012e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
@@ -593,7 +608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2067441490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,10 +621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f43770f429a6c74a82e88513cf721ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsToGenerateCount: 300
-  TimeBetweenUpdates: 0.8
-  TimeBetweenLateUpdates: -0.5
-  Prefab: {fileID: 0}
+  ObjectsToGenerateCount: 2000
+  TimeBetweenUpdates: 0.2
+  TimeBetweenLateUpdates: 0.5
+  Prefab: {fileID: 9097263931631586946, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
 --- !u!4 &2067441491
 Transform:
   m_ObjectHideFlags: 0
@@ -690,6 +705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747055723415227915, guid: 3d5507655706d0643b99a2a6f285012e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
