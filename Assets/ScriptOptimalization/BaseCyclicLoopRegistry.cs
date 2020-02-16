@@ -190,6 +190,12 @@ public class PerTypeCyclicUpdateBag
             if (_currentIndex > updateeIndex)
             {
                 _currentIndex--;
+            }else if (_currentIndex == updateeIndex)
+            {
+                if (_currentIndex >= _updatees.Count)
+                {
+                    _currentIndex = 0;
+                }
             }
         }
     }

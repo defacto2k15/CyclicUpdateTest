@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1eeb67e44e2b945b016cd06603869b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateName: 0
+  UpdateName: 1
   TimeBetweenUpdates: 3
   TimeBetweenLateUpdates: -1

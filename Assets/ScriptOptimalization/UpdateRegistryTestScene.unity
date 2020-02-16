@@ -623,7 +623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectsToGenerateCount: 1000
   TimeBetweenUpdates: 0.2
-  TimeBetweenLateUpdates: -2
+  TimeBetweenLateUpdates: 1
   Prefab: {fileID: 9097263931631586946, guid: 3d5507655706d0643b99a2a6f285012e, type: 3}
 --- !u!4 &2067441491
 Transform:
